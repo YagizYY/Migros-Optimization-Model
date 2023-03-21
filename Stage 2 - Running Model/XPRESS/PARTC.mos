@@ -1,0 +1,159 @@
+!@encoding CP1254
+model ModelName
+uses "mmxprs"; !gain access to the Xpress-Optimizer solver
+
+!optional parameters section
+parameters
+!  SAMPLEPARAM1='c:\test\'
+!  SAMPLEPARAM2=false
+   PROJECTDIR='' ! for when file is added to project
+end-parameters
+
+!sample declarations section
+declarations
+districts = 1..10
+types = 1..4
+x: array(districts,districts,types) of mpvar
+y: array(districts,types) of mpvar
+O: array(districts,types) of mpvar
+Z:array(districts, districts,types)of mpvar
+ST=1
+c = 0.1 
+OC = 60 
+K= 2 
+D: array(districts) of real
+Dist: array(districts,districts) of real
+f: array(types) of real
+cap: array(types) of real
+r: array(types) of real
+M = 9999999  
+n: array(districts,districts) of real
+Servability: array(types,districts,districts) of real
+
+  Objective:linctr
+end-declarations
+D::[483, 426, 736, 790, 894, 524, 386, 784, 302, 662]
+
+Dist::[0, 102, 934, 948, 136, 757, 522, 596, 79, 849,
+102, 0, 427, 36, 144, 483, 80, 803, 740, 718,
+934, 427, 0, 874, 439, 176, 70, 540, 925, 22,
+948, 36, 874, 0, 901, 475, 246, 807, 327, 901,
+136, 144, 439, 901, 0, 830, 985, 812, 976, 561,
+757, 483, 176, 475, 830, 0, 144, 945, 567, 96,
+522, 80, 70, 246, 985, 144, 0, 847, 76, 757,
+596, 803, 540, 807, 812, 945, 847, 0, 807, 729,
+79, 740, 925, 327, 976, 567, 76, 807, 0, 684,
+849, 718, 22, 901, 561, 96, 757, 729, 684, 0]
+
+f::[8000, 16000, 45000, 94000]
+
+cap::[300, 400, 500, 600]
+
+r::[150, 250, 400, 600]
+
+n::[0, 1, 0, 0, 1, 0, 0, 0, 1, 0,
+1, 0, 0, 1, 0, 0, 1, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 1, 0, 0, 1,
+0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+0, 1, 1, 0, 0, 0, 0, 0, 1, 0,
+0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+1, 0, 0, 0, 0, 0, 1, 0, 0, 0,
+0, 0, 1, 0, 0, 1, 0, 0, 0, 0]
+
+Servability::[1, 1, 0, 0, 1, 0, 0, 0, 1, 0,
+ 1, 1, 0, 1, 1, 0, 1, 0, 0, 0,
+ 0, 0, 1, 0, 0, 0, 1, 0, 0, 1,
+ 0, 1, 0, 1, 0, 0, 0, 0, 0, 0,
+ 1, 1, 0, 0, 1, 0, 0, 0, 0, 0,
+ 0, 0, 0, 0, 0, 1, 1, 0, 0, 1,
+ 0, 1, 1, 0, 0, 1, 1, 0, 1, 0,
+ 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
+ 1, 0, 0, 0, 0, 0, 1, 0, 1, 0,
+ 0, 0, 1, 0, 0, 1, 0, 0, 0, 1,
+1, 1, 0, 0, 1, 0, 0, 0, 1, 0,
+ 1, 1, 0, 1, 1, 0, 1, 0, 0, 0,
+ 0, 0, 1, 0, 0, 1, 1, 0, 0, 1,
+ 0, 1, 0, 1, 0, 0, 1, 0, 0, 0,
+ 1, 1, 0, 0, 1, 0, 0, 0, 0, 0,
+ 0, 0, 1, 0, 0, 1, 1, 0, 0, 1,
+ 0, 1, 1, 1, 0, 1, 1, 0, 1, 0,
+ 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
+ 1, 0, 0, 0, 0, 0, 1, 0, 1, 0,
+ 0, 0, 1, 0, 0, 1, 0, 0, 0, 1,
+1, 1, 0, 0, 1, 0, 0, 0, 1, 0,
+ 1, 1, 0, 1, 1, 0, 1, 0, 0, 0,
+ 0, 0, 1, 0, 0, 1, 1, 0, 0, 1,
+ 0, 1, 0, 1, 0, 0, 1, 0, 1, 0,
+ 1, 1, 0, 0, 1, 0, 0, 0, 0, 0,
+ 0, 0, 1, 0, 0, 1, 1, 0, 0, 1,
+ 0, 1, 1, 1, 0, 1, 1, 0, 1, 0,
+ 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
+ 1, 0, 0, 1, 0, 0, 1, 0, 1, 0,
+ 0, 0, 1, 0, 0, 1, 0, 0, 0, 1,
+1, 1, 0, 0, 1, 0, 1, 1, 1, 0,
+ 1, 1, 1, 1, 1, 1, 1, 0, 0, 0,
+ 0, 1, 1, 0, 1, 1, 1, 1, 0, 1,
+ 0, 1, 0, 1, 0, 1, 1, 0, 1, 0,
+ 1, 1, 1, 0, 1, 0, 0, 0, 0, 1,
+ 0, 1, 1, 1, 0, 1, 1, 0, 1, 1,
+ 1, 1, 1, 1, 0, 1, 1, 0, 1, 0,
+ 1, 0, 1, 0, 0, 0, 0, 1, 0, 0,
+ 1, 0, 0, 1, 0, 1, 1, 0, 1, 0,
+ 0, 0, 1, 0, 1, 1, 0, 0, 0, 1]
+!1
+forall(j in districts)
+	sum(i in districts, t in types)x(i,j,t)>= D(j)
+!2
+forall(j in districts)
+	sum(i in districts)n(i,j)*y(i,4) <= M*(1-y(j,4))
+forall(j in districts)
+	1-y(j,4) <= sum(i in districts)n(i,j)*y(i,4)
+!3
+sum(i in districts)y(i,1) - sum(i in districts)y(i,3) <= K
+sum(i in districts)y(i,3) - sum(i in districts)y(i,1) <= K
+!4
+forall(t in types)
+	y(4,t)=y(8,t) 
+!5
+forall(i in districts,j in districts, t in types)
+	(1-Servability(t,i,j))*x(i,j,t) <= 0
+!6
+forall(i in districts,t in types)
+	sum(j in districts) x(i,j,t) <= y(i,t)*cap(t)+(0.1)*O(i,t)*cap(t)
+!7
+forall(i in districts, j in districts, t in types)
+	x(i,j,t)<=y(i,t)*M
+!8
+forall(i in districts, t in types)
+	O(i,t) <= y(i,t)
+!9 
+forall(i in districts,j in districts, t in types)
+	x(i,j,t) >= 0
+!10
+forall(i in districts,j in districts,t in types)
+	x(i,j,t)<= M*Z(i,j,t)
+!11
+forall(j in districts, t in types)
+	sum(i in districts)Z(i,j,t)<= ST
+!12
+forall(i in districts,j in districts, t in types)
+	Z(i,j,t) is_binary
+!13
+forall(i in districts,t in types)
+	y(i,t) is_binary
+forall(i in districts,t in types)
+	O(i,t) is_binary
+	
+obj:=sum(t in types,i in districts)f(t)*y(i,t)+sum(i in districts, j in districts,t in types)x(i,j,t)*Dist(i,j)*c+sum(i in districts, t in types)OC*O(i,t)
+
+minimize(obj)
+
+writeln("Begin running model")
+forall(t in types, i in districts, j in districts)
+	writeln("x (",i,",",j,",",t,")=",getsol(x(i,j,t)))
+writeln(getsol(obj))
+writeln("End running model")
+
+end-model

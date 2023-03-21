@@ -1,0 +1,62 @@
+!@encoding CP1254
+model ModelName
+uses "mmxprs"; !gain access to the Xpress-Optimizer solver
+
+!optional parameters section
+parameters
+!  SAMPLEPARAM1='c:\test\'
+!  SAMPLEPARAM2=false
+   PROJECTDIR='' ! for when file is added to project
+end-parameters
+
+!sample declarations section
+declarations
+district=1..10
+t:mpvar
+x:array(district,district) of mpvar
+y:array(district) of mpvar
+dist:array(district,district) of real
+Served:array(district)of real
+
+  Objective:linctr
+end-declarations
+Served::[1, 0, 1, 1, 1, 1, 1, 1, 1, 1]
+
+dist::[0, 102, 934, 948, 136, 757, 522, 596, 79, 849,
+102, 0, 427, 36, 144, 483, 80, 803, 740, 718,
+934, 427, 0, 874, 439, 176, 70, 540, 925, 22,
+948, 36, 874, 0, 901, 475, 246, 807, 327, 901,
+136, 144, 439, 901, 0, 830, 985, 812, 976, 561,
+757, 483, 176, 475, 830, 0, 144, 945, 567, 96,
+522, 80, 70, 246, 985, 144, 0, 847, 76, 757,
+596, 803, 540, 807, 812, 945, 847, 0, 807, 729,
+79, 740, 925, 327, 976, 567, 76, 807, 0, 684,
+849, 718, 22, 901, 561, 96, 757, 729, 684, 0]
+!1
+forall(i in district,j in district)
+	t>=dist(i,j)*x(i,j)
+!2
+sum(i in district)y(i)=4
+!3
+forall(j in district)
+	sum(i in district)x(i,j)=Served(j)
+!4
+forall(i in district,j in district)
+	y(i)>=x(i,j)
+!5
+forall(i in district,j in district)
+	x(i,j) is_binary
+!6
+forall(i in district)
+	y(i) is_binary
+
+obj:= t
+minimise(t)
+
+writeln("Begin running model")
+forall(i in district, j in district)
+	writeln("x (",i,",",j,")=",getsol(x(i,j)))
+writeln(getsol(obj))
+writeln("End running model")
+
+end-model

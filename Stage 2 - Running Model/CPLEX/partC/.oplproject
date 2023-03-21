@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="ASCII"?><project>
+	<version>1.0</version>
+	<configs>
+		<config default="true" name="excess" category="opl">
+			<ref name="partC.mod" type="model">
+			</ref>
+			<ref name="partC.ops" type="setting">
+			</ref>
+			<ref name="partC.dat" type="data">
+			</ref>
+		</config>
+	</configs>
+	
+</project>
